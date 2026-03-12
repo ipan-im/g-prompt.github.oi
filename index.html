@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#9333ea">
+    <title>Prompt Gallery</title>
+    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Fallback: sembunyikan semua modal sebelum CSS load */
+        #menuOverlay, #sideMenu, #portfolioModal, #adminLogin, #adminPanel, #imageModal, #cardDropdown {
+            display: none !important;
+        }
+        #menuOverlay.active, #sideMenu.active, #portfolioModal.active, #adminLogin.active, #adminPanel.active, #imageModal.active, #cardDropdown.active {
+            display: flex !important;
+        }
+        #adminPanel.active {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand" onclick="goHome()">
+                <div class="logo">P</div>
+                <span class="brand-name">PromptGallery</span>
+            </div>
+            <div class="search-box">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="searchInput" placeholder="Cari outfit, style..." autocomplete="off">
+                <button id="clearSearch" class="clear-btn hidden" onclick="clearSearch()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menu">
+                <span class="hamburger-line line-1"></span>
+                <span class="hamburger-line line-2"></span>
+                <span class="hamburger-line line-3"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Side Menu -->
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-content">
+            <nav class="menu-nav">
+                <a href="#" class="menu-item" onclick="goHome(); return false;">
+                    <div class="menu-icon bg-purple"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></div>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="menu-item" onclick="openPortfolio(); return false;">
+                    <div class="menu-icon bg-blue"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></div>
+                    <span>Tentang Saya</span>
+                </a>
+                <div class="menu-divider"></div>
+                <a href="https://tiktok.com/@username" target="_blank" class="menu-item"><div class="menu-icon bg-black"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a7.94 7.94 0 0 0-.88-.07A6.26 6.26 0 0 0 4.86 15.6a6.26 6.26 0 0 0 10.03 5.03 6.27 6.27 0 0 0 2.2-4.75V8.07a7.94 7.94 0 0 0 4.5 1.45V6.69z"/></svg></div><span>TikTok</span></a>
+                <a href="https://facebook.com/username" target="_blank" class="menu-item"><div class="menu-icon bg-facebook"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div><span>Facebook</span></a>
+                <a href="https://instagram.com/username" target="_blank" class="menu-item"><div class="menu-icon bg-instagram"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-width="2"/><path stroke-width="2" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2" stroke-linecap="round"/></svg></div><span>Instagram</span></a>
+                <a href="https://discord.gg/username" target="_blank" class="menu-item"><div class="menu-icon bg-discord"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></div><span>Discord</span></a>
+                <a href="https://threads.net/username" target="_blank" class="menu-item"><div class="menu-icon bg-black"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.59 12c.025 3.086.718 5.496 2.057 7.164 1.432 1.781 3.632 2.695 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.618-4.356v-.4h-4.3v-2.04h6.462v1.8c0 3.097-1.312 5.977-3.598 7.793-1.862 1.477-4.352 2.254-7.083 2.27z"/></svg></div><span>Threads</span></a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal -->
+    <div class="portfolio-modal" id="portfolioModal">
+        <div class="portfolio-header">
+            <h2>Tentang Saya</h2>
+            <button class="close-btn" onclick="closePortfolio()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <div class="portfolio-content">
+            <div class="profile-section">
+                <div class="profile-avatar">A</div>
+                <h1>AI Artist & Prompt Engineer</h1>
+                <p>Menciptakan visual menakjubkan dengan kecerdasan buatan</p>
+                <button class="admin-trigger" onclick="openAdminLogin()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>Admin Mode</button>
+            </div>
+            <div class="info-grid">
+                <div class="info-card"><h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Pengalaman</h3><p>2+ tahun mengspecialisasi diri dalam pembuatan prompt AI dan generative art menggunakan Midjourney, DALL-E, dan Stable Diffusion.</p></div>
+                <div class="info-card"><h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>Spesialisasi</h3><p>Character design, concept art, architectural visualization, dan photorealistic rendering dengan pendekatan artistik yang unik.</p></div>
+            </div>
+            <div class="contact-section"><p>Tertarik berkolaborasi?</p><a href="mailto:email@example.com" class="contact-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Hubungi Saya</a></div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="admin-login" id="adminLogin">
+        <div class="login-box">
+            <div class="login-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+            <h2>Admin Login</h2>
+            <p>Masukkan password untuk mengelola konten</p>
+            <input type="password" id="adminPass" placeholder="Password" onkeypress="if(event.key==='Enter')checkPassword()">
+            <button onclick="checkPassword()" class="login-btn">Masuk</button>
+            <button onclick="closeAdminLogin()" class="cancel-btn">Batal</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Dashboard Admin</h2>
+            <div class="header-actions">
+                <button onclick="adminLogout()" class="logout-btn" title="Logout"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+                <button onclick="toggleAdmin()" class="close-admin-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+        </div>
+        <div class="admin-content">
+            <div class="stats-grid">
+                <div class="stat-card"><span class="stat-number" id="totalImages">0</span><span class="stat-label">Total Gambar</span></div>
+                <div class="stat-card"><span class="stat-number" id="totalViews">0</span><span class="stat-label">Total Views</span></div>
+                <div class="stat-card"><span class="stat-number" id="storageUsed">0</span><span class="stat-label">Storage Used</span></div>
+            </div>
+            <div class="quick-actions">
+                <button onclick="showSection('add')" class="action-card"><div class="action-icon bg-green"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><span>Tambah Konten</span></button>
+                <button onclick="showSection('manage')" class="action-card"><div class="action-icon bg-blue"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></div><span>Kelola Konten</span></button>
+                <button onclick="showSection('backup')" class="action-card"><div class="action-icon bg-purple"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-4 4m0 0l-4-4m4 4V4"/></svg></div><span>Backup Data</span></button>
+                <button onclick="showSection('settings')" class="action-card"><div class="action-icon bg-orange"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><span>Pengaturan</span></button>
+            </div>
+            <div class="admin-section" id="section-add">
+                <h3 class="section-title">Tambah Gambar Baru</h3>
+                <form id="addForm" onsubmit="addNewImage(event)" class="admin-form">
+                    <div class="form-group"><label>Judul Gambar</label><input type="text" id="newTitle" placeholder="Contoh: Outfit Casual Streetwear" required></div>
+                    <div class="form-group"><label>URL Gambar</label><input type="url" id="newImage" placeholder="https://..." required><small>atau <span class="upload-hint" onclick="showUploadHint()">upload ke Imgur terlebih dahulu</span></small></div>
+                    <div class="form-group"><label>Prompt AI Lengkap</label><textarea id="newPrompt" rows="4" placeholder="Masukkan prompt lengkap..." required></textarea></div>
+                    <div class="form-row"><div class="form-group"><label>Model AI</label><select id="newModel"><option value="Midjourney v6">Midjourney v6</option><option value="DALL-E 3">DALL-E 3</option><option value="Stable Diffusion XL">Stable Diffusion XL</option><option value="Leonardo AI">Leonardo AI</option><option value="Ideogram">Ideogram</option></select></div><div class="form-group"><label>Aspect Ratio</label><select id="newRatio"><option value="3:4">3:4 Portrait</option><option value="4:5">4:5 Portrait</option><option value="1:1">1:1 Square</option><option value="16:9">16:9 Landscape</option><option value="9:16">9:16 Story</option></select></div></div>
+                    <div class="form-group checkbox-group"><input type="checkbox" id="newHasRef"><label for="newHasRef">Ada gambar referensi/bahan?</label></div>
+                    <div id="refInputs" class="hidden"><div class="form-group"><label>URL Referensi (pisahkan dengan koma)</label><textarea id="newRefs" rows="2" placeholder="https://..., https://..."></textarea></div></div>
+                    <button type="submit" class="submit-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>Publish Gambar</button>
+                </form>
+            </div>
+            <div class="admin-section hidden" id="section-manage"><h3 class="section-title">Kelola Konten</h3><div class="content-list" id="adminList"></div></div>
+            <div class="admin-section hidden" id="section-backup"><h3 class="section-title">Backup & Restore</h3><div class="backup-options"><div class="backup-card"><h4>Export Data</h4><p>Download semua data sebagai file JSON untuk backup</p><button onclick="exportData()" class="backup-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download JSON</button></div><div class="backup-card"><h4>Import Data</h4><p>Restore data dari file JSON (akan menimpa data saat ini)</p><label class="backup-btn import-label"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>Pilih File JSON<input type="file" id="importFile" accept=".json" onchange="importData(this)" hidden></label></div><div class="backup-card danger"><h4>Reset Data</h4><p>Hapus semua data dan kembalikan ke default</p><button onclick="resetData()" class="backup-btn danger-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Reset Semua</button></div></div></div>
+            <div class="admin-section hidden" id="section-settings"><h3 class="section-title">Pengaturan</h3><div class="settings-list"><div class="setting-item"><div><span class="setting-title">Ganti Password</span><span class="setting-desc">Ubah password akses admin</span></div><button onclick="changePassword()" class="setting-btn">Ubah</button></div><div class="setting-item"><div><span class="setting-title">Clear Cache</span><span class="setting-desc">Hapus data tersimpan di browser</span></div><button onclick="clearCache()" class="setting-btn">Clear</button></div><div class="setting-item"><div><span class="setting-title">Auto Backup</span><span class="setting-desc">Backup otomatis setiap hari</span></div><label class="toggle"><input type="checkbox" id="autoBackup" onchange="toggleAutoBackup(this)"><span class="toggle-slider"></span></label></div></div></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="results-bar"><span id="resultCount">Semua gambar</span><div class="sort-box"><span>Urutkan:</span><select id="sortSelect" onchange="sortImages()"><option value="newest">Terbaru</option><option value="oldest">Terlama</option></select></div></div>
+        <div class="image-grid" id="imageGrid"></div>
+        <div class="loading-state hidden" id="loadingState"><div class="spinner"></div></div>
+    </main>
+
+    <!-- Card Dropdown -->
+    <div class="card-dropdown" id="cardDropdown">
+        <button class="dropdown-item" onclick="downloadFromDropdown()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg><span>Download</span></button>
+        <button class="dropdown-item" onclick="copyFromDropdown()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Copy Prompt</span></button>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-label">Preview</div>
+        <div class="dropdown-preview"><img id="dropdownPreview" src="" alt=""></div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="fullscreen-modal" id="imageModal">
+        <button class="modal-close" onclick="closeImageModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <div class="modal-content">
+            <div class="modal-image-container"><img id="modalImage" src="" alt=""></div>
+            <div class="modal-details">
+                <h2 id="modalTitle"></h2>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="downloadMainImage()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download</button>
+                    <button class="btn-primary" onclick="copyMainPrompt()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Copy Prompt</button>
+                </div>
+                <div class="reference-section hidden" id="referenceSection"><h3>Bahan Referensi</h3><div class="reference-grid" id="referenceGrid"></div></div>
+                <div class="prompt-section"><h3>Prompt Lengkap</h3><div class="prompt-box"><p id="modalPrompt"></p></div></div>
+                <div class="modal-meta"><span id="modalDate"></span><span id="modalSpecs"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span id="toastMessage">Berhasil!</span></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
